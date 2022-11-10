@@ -46,8 +46,8 @@ export default async function LoginHandler(req: NextApiRequest, res: NextApiResp
     if (!resolvedPassword) {
       return res.status(400).json({ message: "wrong password" });
     }
-
-    setRefreshToken(req, res, createRefreshToken(user.id));
-    return res.status(200).json({ message: "success login", token: createAccessToken(user.id) });
+    const refreshToken = await createRefreshToken(user.id);
+    setRefreshToken(req, res, refreshToken);
+    return res.status(200).json({ message: "success login", token: await createAccessToken(user.id) });
   }
 }

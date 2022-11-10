@@ -10,7 +10,6 @@ export default function Login() {
 
   const onSubmitForm: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    console.log(form.password, form.usernameOrEmail);
     fetcher("/auth/login", {
       method: "POST",
       headers: {
@@ -24,6 +23,7 @@ export default function Login() {
   return (
     <div className="grid place-content-center h-screen">
       <form onSubmit={onSubmitForm}>
+        <h1 className="text-white text-3xl mb-2">Login</h1>
         <div className="w-60 flex-col flex gap-2 mx-auto">
           <input className="rounded-md px-2 py-1" name="usernameOrEmail" value={form.usernameOrEmail} onChange={onChangeForm} placeholder="username or email" />
           <input className="rounded-md px-2 py-1" name={"password"} value={form.password} onChange={onChangeForm} placeholder="password" type={"password"} />
