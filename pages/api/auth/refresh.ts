@@ -11,7 +11,7 @@ export default async function Refresh(req: NextApiRequest, res: NextApiResponse)
     });
 
     const parsed = bodySchema.safeParse(req.body);
-
+    console.log("refresh");
     if (parsed.success) {
       if (!REFRESH_TOKEN_SECRET) return res.status(500).json({ message: "secret missing" });
       const verified = await verify(parsed.data.refreshToken, REFRESH_TOKEN_SECRET).catch(() => {

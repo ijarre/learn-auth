@@ -4,6 +4,7 @@ import z from "zod";
 import bcrypt from "bcrypt";
 import { createAccessToken, createRefreshToken } from "../../../modules/auth";
 import { setRefreshToken } from "../../../modules/auth/AuthController";
+import { setCookie } from "cookies-next";
 
 const prisma = new PrismaClient();
 
@@ -48,6 +49,7 @@ export default async function LoginHandler(req: NextApiRequest, res: NextApiResp
     }
     const refreshToken = await createRefreshToken(user.id);
     setRefreshToken(req, res, refreshToken);
+    setCookie("mbb", user.id, { req, res });
     return res.status(200).json({ message: "success login", token: await createAccessToken(user.id) });
   }
 }

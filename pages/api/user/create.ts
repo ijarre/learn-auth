@@ -2,6 +2,9 @@ import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import z from "zod";
 import bcrypt from "bcrypt";
+import { createRefreshToken } from "../../../modules/auth";
+import { setRefreshToken } from "../../../modules/auth/AuthController";
+import { setCookie } from "cookies-next";
 
 const prisma = new PrismaClient();
 
@@ -29,6 +32,9 @@ export default async function CreateUser(req: NextApiRequest, res: NextApiRespon
       },
     });
     if (newUser) {
+      const refreshToken = await createRefreshToken(newUser.id);
+      setRefreshToken(req, res, refreshToken);
+      setCookie("mbb", newUser.id, { req, res });
       return res.status(200).json({ message: "success creating user" });
     }
     return res.status(500).json({ message: "something went wrong" });
